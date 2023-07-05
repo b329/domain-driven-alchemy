@@ -1,4 +1,4 @@
-import { Module, DynamicModule } from '@nestjs/common';
+import { Module, DynamicModule, Logger } from '@nestjs/common';
 import { AlchemyApiService } from './alchemy-api.service';
 import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy-api.constants';
 import { AlchemyApiModuleOptions } from './interfaces';
@@ -20,6 +20,7 @@ export class AlchemyApiModule {
           provide: AlchemyApiService,
           useClass: AlchemyApiService,
         },
+        Logger,
       ],
     };
   }
