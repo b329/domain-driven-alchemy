@@ -6,6 +6,9 @@ import { CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler } from '@modules
 import { AlchemyWalletMapper } from '@modules/alchemy/alchemy-wallet.mapper';
 import { ALCHEMY_WALLET_REPOSITORY } from '@modules/alchemy/alchemy-wallet.di-tokens';
 import { AlchemyWalletRepository } from '@modules/alchemy/database/alchemy-wallet.repository';
+import { CreateAlchemyWalletHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy-wallet.http.controller';
+
+const httpControllers = [CreateAlchemyWalletHttpController];
 
 const eventHandlers: Provider[] = [
   CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler,
@@ -23,6 +26,7 @@ export class AlchemyApiModule {
     return {
       ...options,
       module: AlchemyApiModule,
+      controllers: [...httpControllers],
       exports: [AlchemyApiService, ALCHEMY_API_MODULE_OPTIONS],
       global: options.isGlobal ?? false,
       providers: [
