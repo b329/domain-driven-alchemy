@@ -4,10 +4,6 @@ import { Err, Ok, Result } from 'oxide.ts';
 import { v4 } from 'uuid';
 import { AlchemyWalletCreatedDomainEvent } from './events/alchemy-wallet-created.domain-event';
 import { AlchemyWalletNotEnoughBalanceError } from './alchemy-wallet.errors';
-import {
-  CreateWalletProps,
-  WalletProps,
-} from '@modules/wallet/domain/wallet.entity';
 
 export interface CreateAlchemyWalletProps {
   userId: AggregateID;
@@ -20,9 +16,9 @@ export interface AlchemyWalletProps extends CreateAlchemyWalletProps {
 export class AlchemyWalletEntity extends AggregateRoot<AlchemyWalletProps> {
   protected readonly _id: AggregateID;
 
-  static create(create: CreateWalletProps): AlchemyWalletEntity {
+  static create(create: CreateAlchemyWalletProps): AlchemyWalletEntity {
     const id = v4();
-    const props: WalletProps = { ...create, balance: 0 };
+    const props: AlchemyWalletProps = { ...create, balance: 0 };
     const wallet = new AlchemyWalletEntity({ id, props });
 
     wallet.addEvent(
