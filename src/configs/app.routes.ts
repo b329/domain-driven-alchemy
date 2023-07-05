@@ -6,6 +6,7 @@
 // Root
 const usersRoot = 'users';
 const walletsRoot = 'wallets';
+const alchemyWalletsRoot = 'alchemyWallets';
 
 // Api Versions
 const v1 = 'v1';
@@ -19,5 +20,9 @@ export const routesV1 = {
   wallet: {
     root: walletsRoot,
     delete: `/${walletsRoot}/:id`,
+  },
+  alchemyWallet: {
+    root: alchemyWalletsRoot,
+    delete: `/${alchemyWalletsRoot}/:id`,
   },
 };

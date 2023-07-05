@@ -17,10 +17,10 @@ import { AggregateID } from '@libs/ddd';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
 
 @Controller(routesV1.version)
-export class CreateUserHttpController {
+export class CreateAlchemyWalletHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @ApiOperation({ summary: 'Create a user' })
+  @ApiOperation({ summary: 'Create an Alchemy Wallet' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: IdResponse,
@@ -34,7 +34,7 @@ export class CreateUserHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: ApiErrorResponse,
   })
-  @Post(routesV1.user.root)
+  @Post(routesV1.alchemyWallet.root)
   async create(
     @Body() body: CreateAlchemyWalletRequestDto,
   ): Promise<IdResponse> {
