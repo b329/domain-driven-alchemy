@@ -5,30 +5,30 @@ import { v4 } from 'uuid';
 import { AlchemyCreatedDomainEvent } from './events/alchemy-created.domain-event';
 import { AlchemyWalletNotEnoughBalanceError } from './alchemy.errors';
 
-export interface CreateAlchemyWalletProps {
+export interface CreateAlchemyProps {
   userId: AggregateID;
 }
 
-export interface AlchemyWalletProps extends CreateAlchemyWalletProps {
+export interface AlchemyProps extends CreateAlchemyProps {
   balance: number;
 }
 
-export class AlchemyEntity extends AggregateRoot<AlchemyWalletProps> {
+export class AlchemyEntity extends AggregateRoot<AlchemyProps> {
   protected readonly _id: AggregateID;
 
-  static create(create: CreateAlchemyWalletProps): AlchemyEntity {
+  static create(create: CreateAlchemyProps): AlchemyEntity {
     const id = v4();
-    const props: AlchemyWalletProps = { ...create, balance: 0 };
-    const wallet = new AlchemyEntity({ id, props });
+    const props: AlchemyProps = { ...create, balance: 0 };
+    const alchemy = new AlchemyEntity({ id, props });
 
-    wallet.addEvent(
+    alchemy.addEvent(
       new AlchemyCreatedDomainEvent({
         aggregateId: id,
         userId: create.userId,
       }),
     );
 
-    return wallet;
+    return alchemy;
   }
 
   deposit(amount: number): void {
@@ -51,7 +51,7 @@ export class AlchemyEntity extends AggregateRoot<AlchemyWalletProps> {
   public validate(): void {
     if (this.props.balance < 0) {
       throw new ArgumentOutOfRangeException(
-        'Wallet balance cannot be less than 0',
+        'Alchemy balance cannot be less than 0',
       );
     }
   }

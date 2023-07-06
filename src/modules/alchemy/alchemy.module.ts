@@ -9,13 +9,13 @@ import { AlchemyRepository } from '@modules/alchemy/database/alchemy.repository'
 import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy.http.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 
-const httpControllers = [CreateAlchemyHttpController];
+// const httpControllers = [CreateAlchemyHttpController];
 
 const eventHandlers: Provider[] = [
   CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler,
 ];
 
-const commandHandlers: Provider[] = [CreateAlchemyWalletService];
+// const commandHandlers: Provider[] = [CreateAlchemyWalletService];
 
 const mappers: Provider[] = [AlchemyMapper];
 
@@ -24,13 +24,13 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [CqrsModule],
-  controllers: [...httpControllers],
+  imports: [],
+  controllers: [],
   providers: [
     Logger,
     ...eventHandlers,
     ...repositories,
-    ...commandHandlers,
+    // ...commandHandlers,
     ...mappers,
   ],
 })

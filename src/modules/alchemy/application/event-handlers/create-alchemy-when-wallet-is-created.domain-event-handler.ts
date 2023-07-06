@@ -15,9 +15,9 @@ export class CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler {
   // Handle a Domain Event by performing changes to other aggregates (inside the same Domain).
   @OnEvent(UserCreatedDomainEvent.name, { async: true, promisify: true })
   async handle(event: UserCreatedDomainEvent): Promise<any> {
-    const wallet = AlchemyEntity.create({
+    const alchemy = AlchemyEntity.create({
       userId: event.aggregateId,
     });
-    return this.alchemyRepo.insert(wallet);
+    return this.alchemyRepo.insert(alchemy);
   }
 }
