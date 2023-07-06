@@ -1,13 +1,13 @@
 import { Module, Logger, Provider } from '@nestjs/common';
-import { CreateAlchemyWalletService } from './alchemy.service';
+// import { CreateAlchemyWalletService } from './alchemy.service';
 // import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy-api.constants';
 // import { AlchemyApiModuleOptions } from './interfaces';
 import { CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler } from '@modules/alchemy/application/event-handlers/create-alchemy-when-wallet-is-created.domain-event-handler';
 import { AlchemyMapper } from '@modules/alchemy/alchemy.mapper';
 import { ALCHEMY_REPOSITORY } from '@modules/alchemy/alchemy.di-tokens';
 import { AlchemyRepository } from '@modules/alchemy/database/alchemy.repository';
-import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy.http.controller';
-import { CqrsModule } from '@nestjs/cqrs';
+// import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy.http.controller';
+// import { CqrsModule } from '@nestjs/cqrs';
 
 // const httpControllers = [CreateAlchemyHttpController];
 
