@@ -1,5 +1,8 @@
 import { Module, DynamicModule, Logger, Provider } from '@nestjs/common';
-import { AlchemyApiService } from './alchemy-api.service';
+import {
+  AlchemyApiService,
+  CreateAlchemyWalletService,
+} from './alchemy-api.service';
 import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy-api.constants';
 import { AlchemyApiModuleOptions } from './interfaces';
 import { CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler } from '@modules/alchemy/application/event-handlers/create-alchemy-wallet-when-wallet-is-created.domain-event-handler';
@@ -12,6 +15,11 @@ const httpControllers = [CreateAlchemyWalletHttpController];
 
 const eventHandlers: Provider[] = [
   CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler,
+];
+
+const commandHandlers: Provider[] = [
+  CreateAlchemyWalletService,
+  AlchemyApiService,
 ];
 
 const mappers: Provider[] = [AlchemyWalletMapper];
@@ -40,6 +48,7 @@ export class AlchemyApiModule {
         },
         Logger,
         ...eventHandlers,
+        ...commandHandlers,
         ...mappers,
         ...repositories,
       ],

@@ -2,6 +2,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AlchemyWeb3, createAlchemyWeb3 } from '@alch/alchemy-web3';
 import { AlchemyApiModuleOptions } from './interfaces';
 import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy-api.constants';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-wallet.repository.port';
+import { ALCHEMY_WALLET_REPOSITORY } from '@modules/alchemy/alchemy-wallet.di-tokens';
+import { Err, Ok, Result } from 'oxide.ts';
+import { AggregateID } from '@libs/ddd';
+import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
+import { AlchemyWalletEntity } from '@modules/alchemy/domain/alchemy-wallet.entity';
+import { ConflictException } from '@libs/exceptions';
+import { CreateAlchemyWalletCommand } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy-wallet.command';
 
 @Injectable()
 export class AlchemyApiService {
@@ -9,6 +18,8 @@ export class AlchemyApiService {
   constructor(
     @Inject(ALCHEMY_API_MODULE_OPTIONS)
     private readonly options: AlchemyApiModuleOptions,
+    @Inject(ALCHEMY_WALLET_REPOSITORY)
+    protected readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,
   ) {
     const { alchemyUrl, ...alchemyWeb3Config } = this.options;
 
@@ -18,7 +29,37 @@ export class AlchemyApiService {
   /**
    * Returns raw Alchemy API Client instance.
    */
-  get client() {
+  private get client() {
     return this.alchemyApiInstance;
+  }
+}
+
+@CommandHandler(CreateAlchemyWalletCommand)
+export class CreateAlchemyWalletService implements ICommandHandler {
+  constructor(
+    @Inject(ALCHEMY_WALLET_REPOSITORY)
+    protected readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,
+  ) {}
+
+  async execute(
+    command: CreateAlchemyWalletCommand,
+  ): Promise<Result<AggregateID, UserAlreadyExistsError>> {
+    const alchemyWallet = AlchemyWalletEntity.create({
+      userId: command.userId,
+    });
+
+    try {
+      /* Wrapping operation in a transaction to make sure
+         that all domain events are processed atomically */
+      await this.alchemyWalletRepo.transaction(async () =>
+        this.alchemyWalletRepo.insert(alchemyWallet),
+      );
+      return Ok(alchemyWallet.id);
+    } catch (error: any) {
+      if (error instanceof ConflictException) {
+        return Err(new UserAlreadyExistsError(error));
+      }
+      throw error;
+    }
   }
 }
