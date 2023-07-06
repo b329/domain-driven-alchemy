@@ -11,10 +11,10 @@ import { CommandBus } from '@nestjs/cqrs';
 import { match, Result } from 'oxide.ts';
 import { CreateAlchemyWalletCommand } from './create-alchemy-wallet.command';
 import { CreateAlchemyWalletRequestDto } from './create-alchemy-wallet.request.dto';
-import { UserAlreadyExistsError } from '@modules/user/domain/user.errors';
 import { IdResponse } from '@libs/api/id.response.dto';
 import { AggregateID } from '@libs/ddd';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
+import { AlchemyWalletNotEnoughBalanceError } from '@modules/alchemy/domain/alchemy-wallet.errors';
 
 @Controller(routesV1.version)
 export class CreateAlchemyWalletHttpController {
@@ -27,7 +27,7 @@ export class CreateAlchemyWalletHttpController {
   })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
-    description: UserAlreadyExistsError.message,
+    description: AlchemyWalletNotEnoughBalanceError.message,
     type: ApiErrorResponse,
   })
   @ApiResponse({
@@ -40,7 +40,7 @@ export class CreateAlchemyWalletHttpController {
   ): Promise<IdResponse> {
     const command = new CreateAlchemyWalletCommand(body);
 
-    const result: Result<AggregateID, UserAlreadyExistsError> =
+    const result: Result<AggregateID, AlchemyWalletNotEnoughBalanceError> =
       await this.commandBus.execute(command);
 
     // Deciding what to do with a Result (similar to Rust matching)
@@ -49,7 +49,7 @@ export class CreateAlchemyWalletHttpController {
     return match(result, {
       Ok: (id: string) => new IdResponse(id),
       Err: (error: Error) => {
-        if (error instanceof UserAlreadyExistsError)
+        if (error instanceof AlchemyWalletNotEnoughBalanceError)
           throw new ConflictHttpException(error.message);
         throw error;
       },
