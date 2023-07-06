@@ -9,7 +9,7 @@ import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy-wallet.di-tokens';
 import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-wallet.repository.port';
 
 @CommandHandler(CreateAlchemyWalletCommand)
-export class CreateUserService implements ICommandHandler {
+export class CreateAlchemyWalletService implements ICommandHandler {
   constructor(
     @Inject(ALCHEMY_WALLET_REPOSITORY)
     protected readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,

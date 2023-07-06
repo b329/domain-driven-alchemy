@@ -1,5 +1,5 @@
 import { InjectPool } from 'nestjs-slonik';
-import { DatabasePool } from 'slonik';
+import { DatabasePool, sql } from 'slonik';
 import { z } from 'zod';
 import { SqlRepositoryBase } from '@src/libs/db/sql-repository.base';
 import { AlchemyWalletRepositoryPort } from './alchemy-wallet.repository.port';
@@ -34,5 +34,15 @@ export class AlchemyWalletRepository
     eventEmitter: EventEmitter2,
   ) {
     super(pool, mapper, eventEmitter, new Logger(AlchemyWalletRepository.name));
+  }
+
+  async findOneByUserId(userId: string): Promise<AlchemyWalletEntity> {
+    const alchemy = await this.pool.one(
+      sql.type(
+        alchemyWalletSchema,
+      )`SELECT * FROM "alchemy_wallets" WHERE userId = ${userId}`,
+    );
+
+    return this.mapper.toDomain(alchemy);
   }
 }
