@@ -32,14 +32,14 @@ const interceptors = [
       connectionUri: postgresConnectionUri,
     }),
     CqrsModule,
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   autoSchemaFile: true,
-    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+    }),
 
     // Modules
-    // UserModule,
-    // WalletModule,
+    UserModule,
+    WalletModule,
     AlchemyModule,
   ],
   controllers: [],
