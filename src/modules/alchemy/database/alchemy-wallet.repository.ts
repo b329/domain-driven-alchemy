@@ -23,7 +23,7 @@ export class AlchemyWalletRepository
   extends SqlRepositoryBase<AlchemyWalletEntity, AlchemyWalletModel>
   implements AlchemyWalletRepositoryPort
 {
-  protected tableName = 'wallets';
+  protected tableName = 'alchemy_wallets';
 
   protected schema = alchemyWalletSchema;
 
