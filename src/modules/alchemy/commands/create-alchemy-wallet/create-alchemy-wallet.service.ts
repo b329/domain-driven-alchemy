@@ -5,7 +5,7 @@ import { AggregateID } from '@libs/ddd';
 import { AlchemyWalletEntity } from '@modules/alchemy/domain/alchemy-wallet.entity';
 import { ConflictException } from '@libs/exceptions';
 import { Inject } from '@nestjs/common';
-import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy-wallet.di-tokens';
+import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy.di-tokens';
 import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-wallet.repository.port';
 
 @CommandHandler(CreateAlchemyWalletCommand)

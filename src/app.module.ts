@@ -4,7 +4,7 @@ import { SlonikModule } from 'nestjs-slonik';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserModule } from '@modules/user/user.module';
 import { WalletModule } from '@modules/wallet/wallet.module';
-import { AlchemyModule } from '@modules/alchemy/alchemy-api.module';
+import { AlchemyModule } from '@modules/alchemy/alchemy.module';
 import { RequestContextModule } from 'nestjs-request-context';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ContextInterceptor } from './libs/application/context/ContextInterceptor';

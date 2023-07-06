@@ -7,7 +7,7 @@ import {
 } from './database/alchemy-wallet.repository';
 
 @Injectable()
-export class AlchemyWalletMapper
+export class AlchemyMapper
   implements Mapper<AlchemyWalletEntity, AlchemyWalletModel>
 {
   toPersistence(entity: AlchemyWalletEntity): AlchemyWalletModel {

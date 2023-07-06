@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AlchemyApiService } from './alchemy-api.service';
+import { AlchemyApiService } from './alchemy.service';
 
 describe('AlchemyApiService', () => {
   let service: AlchemyApiService;

@@ -1,2 +1,2 @@
-export * from './alchemy-api.module';
-export * from './alchemy-api.service';
+export * from './alchemy.module';
+export * from './alchemy.service';

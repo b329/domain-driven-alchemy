@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { SqlRepositoryBase } from '@src/libs/db/sql-repository.base';
 import { AlchemyWalletRepositoryPort } from './alchemy-wallet.repository.port';
 import { AlchemyWalletEntity } from '../domain/alchemy-wallet.entity';
-import { AlchemyWalletMapper } from '../alchemy-wallet.mapper';
+import { AlchemyMapper } from '../alchemy.mapper';
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
@@ -30,7 +30,7 @@ export class AlchemyWalletRepository
   constructor(
     @InjectPool()
     pool: DatabasePool,
-    mapper: AlchemyWalletMapper,
+    mapper: AlchemyMapper,
     eventEmitter: EventEmitter2,
   ) {
     super(pool, mapper, eventEmitter, new Logger(AlchemyWalletRepository.name));

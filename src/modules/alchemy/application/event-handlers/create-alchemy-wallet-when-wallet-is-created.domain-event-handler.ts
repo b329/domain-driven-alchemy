@@ -3,7 +3,7 @@ import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-w
 import { AlchemyWalletEntity } from '../../domain/alchemy-wallet.entity';
 import { OnEvent } from '@nestjs/event-emitter';
 import { Inject, Injectable } from '@nestjs/common';
-import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy-wallet.di-tokens';
+import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy.di-tokens';
 
 @Injectable()
 export class CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler {
