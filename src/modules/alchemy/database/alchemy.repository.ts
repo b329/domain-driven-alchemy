@@ -3,12 +3,12 @@ import { DatabasePool, sql } from 'slonik';
 import { z } from 'zod';
 import { SqlRepositoryBase } from '@src/libs/db/sql-repository.base';
 import { AlchemyRepositoryPort } from './alchemy.repository.port';
-import { AlchemyWalletEntity } from '../domain/alchemy-wallet.entity';
+import { AlchemyEntity } from '../domain/alchemy.entity';
 import { AlchemyMapper } from '../alchemy.mapper';
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-export const alchemyWalletSchema = z.object({
+export const alchemySchema = z.object({
   id: z.string().min(1).max(255),
   createdAt: z.preprocess((val: any) => new Date(val), z.date()),
   updatedAt: z.preprocess((val: any) => new Date(val), z.date()),
@@ -16,16 +16,16 @@ export const alchemyWalletSchema = z.object({
   userId: z.string().min(1).max(255),
 });
 
-export type AlchemyWalletModel = z.TypeOf<typeof alchemyWalletSchema>;
+export type AlchemyModel = z.TypeOf<typeof alchemySchema>;
 
 @Injectable()
 export class AlchemyRepository
-  extends SqlRepositoryBase<AlchemyWalletEntity, AlchemyWalletModel>
+  extends SqlRepositoryBase<AlchemyEntity, AlchemyModel>
   implements AlchemyRepositoryPort
 {
-  protected tableName = 'alchemy_wallets';
+  protected tableName = 'alchemy';
 
-  protected schema = alchemyWalletSchema;
+  protected schema = alchemySchema;
 
   constructor(
     @InjectPool()
@@ -36,11 +36,9 @@ export class AlchemyRepository
     super(pool, mapper, eventEmitter, new Logger(AlchemyRepository.name));
   }
 
-  async findOneByUserId(userId: string): Promise<AlchemyWalletEntity> {
+  async findOneByUserId(userId: string): Promise<AlchemyEntity> {
     const alchemy = await this.pool.one(
-      sql.type(
-        alchemyWalletSchema,
-      )`SELECT * FROM "alchemy_wallets" WHERE userId = ${userId}`,
+      sql.type(alchemySchema)`SELECT * FROM "alchemy" WHERE userId = ${userId}`,
     );
 
     return this.mapper.toDomain(alchemy);

@@ -2,8 +2,8 @@ import { AggregateID, AggregateRoot } from '@libs/ddd';
 import { ArgumentOutOfRangeException } from '@libs/exceptions';
 import { Err, Ok, Result } from 'oxide.ts';
 import { v4 } from 'uuid';
-import { AlchemyWalletCreatedDomainEvent } from './events/alchemy-wallet-created.domain-event';
-import { AlchemyWalletNotEnoughBalanceError } from './alchemy-wallet.errors';
+import { AlchemyCreatedDomainEvent } from './events/alchemy-created.domain-event';
+import { AlchemyWalletNotEnoughBalanceError } from './alchemy.errors';
 
 export interface CreateAlchemyWalletProps {
   userId: AggregateID;
@@ -13,16 +13,16 @@ export interface AlchemyWalletProps extends CreateAlchemyWalletProps {
   balance: number;
 }
 
-export class AlchemyWalletEntity extends AggregateRoot<AlchemyWalletProps> {
+export class AlchemyEntity extends AggregateRoot<AlchemyWalletProps> {
   protected readonly _id: AggregateID;
 
-  static create(create: CreateAlchemyWalletProps): AlchemyWalletEntity {
+  static create(create: CreateAlchemyWalletProps): AlchemyEntity {
     const id = v4();
     const props: AlchemyWalletProps = { ...create, balance: 0 };
-    const wallet = new AlchemyWalletEntity({ id, props });
+    const wallet = new AlchemyEntity({ id, props });
 
     wallet.addEvent(
-      new AlchemyWalletCreatedDomainEvent({
+      new AlchemyCreatedDomainEvent({
         aggregateId: id,
         userId: create.userId,
       }),

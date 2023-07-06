@@ -1,32 +1,32 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'oxide.ts';
-import { CreateAlchemyWalletCommand } from './create-alchemy-wallet.command';
+import { CreateAlchemyCommand } from './create-alchemy.command';
 import { AggregateID } from '@libs/ddd';
-import { AlchemyWalletEntity } from '@modules/alchemy/domain/alchemy-wallet.entity';
+import { AlchemyEntity } from '@modules/alchemy/domain/alchemy.entity';
 import { ConflictException } from '@libs/exceptions';
 import { Inject } from '@nestjs/common';
-import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy.di-tokens';
+import { ALCHEMY_REPOSITORY } from '../../alchemy.di-tokens';
 import { AlchemyRepositoryPort } from '@modules/alchemy/database/alchemy.repository.port';
 
-@CommandHandler(CreateAlchemyWalletCommand)
-export class CreateAlchemyWalletService implements ICommandHandler {
+@CommandHandler(CreateAlchemyCommand)
+export class CreateAlchemyService implements ICommandHandler {
   constructor(
-    @Inject(ALCHEMY_WALLET_REPOSITORY)
-    protected readonly alchemyWalletRepo: AlchemyRepositoryPort,
+    @Inject(ALCHEMY_REPOSITORY)
+    protected readonly alchemyRepo: AlchemyRepositoryPort,
   ) {}
 
   async execute(
-    command: CreateAlchemyWalletCommand,
+    command: CreateAlchemyCommand,
   ): Promise<Result<AggregateID, any>> {
-    const alchemyWallet = AlchemyWalletEntity.create({
+    const alchemyWallet = AlchemyEntity.create({
       userId: command.userId,
     });
 
     try {
       /* Wrapping operation in a transaction to make sure
                that all domain events are processed atomically */
-      await this.alchemyWalletRepo.transaction(async () =>
-        this.alchemyWalletRepo.insert(alchemyWallet),
+      await this.alchemyRepo.transaction(async () =>
+        this.alchemyRepo.insert(alchemyWallet),
       );
       return Ok(alchemyWallet.id);
     } catch (error: any) {

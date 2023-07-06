@@ -4,13 +4,13 @@ import { AlchemyApiModuleOptions } from './interfaces';
 import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy.constants';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AlchemyRepositoryPort } from '@modules/alchemy/database/alchemy.repository.port';
-import { ALCHEMY_WALLET_REPOSITORY } from '@modules/alchemy/alchemy.di-tokens';
+import { ALCHEMY_REPOSITORY } from '@modules/alchemy/alchemy.di-tokens';
 import { Err, Ok, Result } from 'oxide.ts';
 import { AggregateID } from '@libs/ddd';
-import { AlchemyWalletNotEnoughBalanceError } from '@modules/alchemy/domain/alchemy-wallet.errors';
-import { AlchemyWalletEntity } from '@modules/alchemy/domain/alchemy-wallet.entity';
+import { AlchemyWalletNotEnoughBalanceError } from '@modules/alchemy/domain/alchemy.errors';
+import { AlchemyEntity } from '@modules/alchemy/domain/alchemy.entity';
 import { ConflictException } from '@libs/exceptions';
-import { CreateAlchemyWalletCommand } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy-wallet.command';
+import { CreateAlchemyCommand } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy.command';
 
 @Injectable()
 export class AlchemyService {
@@ -18,8 +18,8 @@ export class AlchemyService {
   constructor(
     @Inject(ALCHEMY_API_MODULE_OPTIONS)
     private readonly options: AlchemyApiModuleOptions,
-    @Inject(ALCHEMY_WALLET_REPOSITORY)
-    protected readonly alchemyWalletRepo: AlchemyRepositoryPort,
+    @Inject(ALCHEMY_REPOSITORY)
+    protected readonly alchemyRepo: AlchemyRepositoryPort,
   ) {
     const { alchemyUrl, ...alchemyWeb3Config } = this.options;
 
@@ -34,25 +34,25 @@ export class AlchemyService {
   }
 }
 
-@CommandHandler(CreateAlchemyWalletCommand)
+@CommandHandler(CreateAlchemyCommand)
 export class CreateAlchemyWalletService implements ICommandHandler {
   constructor(
-    @Inject(ALCHEMY_WALLET_REPOSITORY)
-    protected readonly alchemyWalletRepo: AlchemyRepositoryPort,
+    @Inject(ALCHEMY_REPOSITORY)
+    protected readonly alchemyRepo: AlchemyRepositoryPort,
   ) {}
 
   async execute(
-    command: CreateAlchemyWalletCommand,
+    command: CreateAlchemyCommand,
   ): Promise<Result<AggregateID, AlchemyWalletNotEnoughBalanceError>> {
-    const alchemyWallet = AlchemyWalletEntity.create({
+    const alchemyWallet = AlchemyEntity.create({
       userId: command.userId,
     });
 
     try {
       /* Wrapping operation in a transaction to make sure
          that all domain events are processed atomically */
-      await this.alchemyWalletRepo.transaction(async () =>
-        this.alchemyWalletRepo.insert(alchemyWallet),
+      await this.alchemyRepo.transaction(async () =>
+        this.alchemyRepo.insert(alchemyWallet),
       );
       return Ok(alchemyWallet.id);
     } catch (error: any) {

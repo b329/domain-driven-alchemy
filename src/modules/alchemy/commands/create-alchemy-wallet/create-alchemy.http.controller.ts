@@ -9,15 +9,15 @@ import { routesV1 } from '@config/app.routes';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { match, Result } from 'oxide.ts';
-import { CreateAlchemyWalletCommand } from './create-alchemy-wallet.command';
-import { CreateAlchemyWalletRequestDto } from './create-alchemy-wallet.request.dto';
+import { CreateAlchemyCommand } from './create-alchemy.command';
+import { CreateAlchemyRequestDto } from './create-alchemy.request.dto';
 import { IdResponse } from '@libs/api/id.response.dto';
 import { AggregateID } from '@libs/ddd';
 import { ApiErrorResponse } from '@src/libs/api/api-error.response';
-import { AlchemyWalletNotEnoughBalanceError } from '@modules/alchemy/domain/alchemy-wallet.errors';
+import { AlchemyWalletNotEnoughBalanceError } from '@modules/alchemy/domain/alchemy.errors';
 
 @Controller(routesV1.version)
-export class CreateAlchemyWalletHttpController {
+export class CreateAlchemyHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @ApiOperation({ summary: 'Create an Alchemy Wallet' })
@@ -35,10 +35,8 @@ export class CreateAlchemyWalletHttpController {
     type: ApiErrorResponse,
   })
   @Post(routesV1.alchemyWallet.root)
-  async create(
-    @Body() body: CreateAlchemyWalletRequestDto,
-  ): Promise<IdResponse> {
-    const command = new CreateAlchemyWalletCommand(body);
+  async create(@Body() body: CreateAlchemyRequestDto): Promise<IdResponse> {
+    const command = new CreateAlchemyCommand(body);
 
     const result: Result<AggregateID, AlchemyWalletNotEnoughBalanceError> =
       await this.commandBus.execute(command);

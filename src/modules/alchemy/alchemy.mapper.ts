@@ -1,29 +1,24 @@
 import { Mapper } from '@libs/ddd';
 import { Injectable } from '@nestjs/common';
-import { AlchemyWalletEntity } from './domain/alchemy-wallet.entity';
-import {
-  AlchemyWalletModel,
-  alchemyWalletSchema,
-} from './database/alchemy.repository';
+import { AlchemyEntity } from './domain/alchemy.entity';
+import { AlchemyModel, alchemySchema } from './database/alchemy.repository';
 
 @Injectable()
-export class AlchemyMapper
-  implements Mapper<AlchemyWalletEntity, AlchemyWalletModel>
-{
-  toPersistence(entity: AlchemyWalletEntity): AlchemyWalletModel {
+export class AlchemyMapper implements Mapper<AlchemyEntity, AlchemyModel> {
+  toPersistence(entity: AlchemyEntity): AlchemyModel {
     const copy = entity.getProps();
-    const record: AlchemyWalletModel = {
+    const record: AlchemyModel = {
       id: copy.id,
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       userId: copy.userId,
       balance: copy.balance,
     };
-    return alchemyWalletSchema.parse(record);
+    return alchemySchema.parse(record);
   }
 
-  toDomain(record: AlchemyWalletModel): AlchemyWalletEntity {
-    const entity = new AlchemyWalletEntity({
+  toDomain(record: AlchemyModel): AlchemyEntity {
+    const entity = new AlchemyEntity({
       id: record.id,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,

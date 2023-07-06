@@ -1,4 +1,4 @@
 import { RepositoryPort } from '@libs/ddd';
-import { AlchemyWalletEntity } from '../domain/alchemy-wallet.entity';
+import { AlchemyEntity } from '../domain/alchemy.entity';
 
-export type AlchemyRepositoryPort = RepositoryPort<AlchemyWalletEntity>;
+export type AlchemyRepositoryPort = RepositoryPort<AlchemyEntity>;
