@@ -40,7 +40,7 @@ const interceptors = [
     // Modules
     UserModule,
     WalletModule,
-    AlchemyModule,
+    // AlchemyModule,
   ],
   controllers: [],
   providers: [...interceptors],

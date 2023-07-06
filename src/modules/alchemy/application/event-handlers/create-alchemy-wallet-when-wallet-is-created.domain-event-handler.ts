@@ -1,5 +1,5 @@
 import { UserCreatedDomainEvent } from '@modules/user/domain/events/user-created.domain-event';
-import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-wallet.repository.port';
+import { AlchemyRepositoryPort } from '@modules/alchemy/database/alchemy.repository.port';
 import { AlchemyWalletEntity } from '../../domain/alchemy-wallet.entity';
 import { OnEvent } from '@nestjs/event-emitter';
 import { Inject, Injectable } from '@nestjs/common';
@@ -9,7 +9,7 @@ import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy.di-tokens';
 export class CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler {
   constructor(
     @Inject(ALCHEMY_WALLET_REPOSITORY)
-    private readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,
+    private readonly alchemyWalletRepo: AlchemyRepositoryPort,
   ) {}
 
   // Handle a Domain Event by performing changes to other aggregates (inside the same Domain).

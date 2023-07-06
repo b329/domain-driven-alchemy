@@ -2,7 +2,7 @@ import { InjectPool } from 'nestjs-slonik';
 import { DatabasePool, sql } from 'slonik';
 import { z } from 'zod';
 import { SqlRepositoryBase } from '@src/libs/db/sql-repository.base';
-import { AlchemyWalletRepositoryPort } from './alchemy-wallet.repository.port';
+import { AlchemyRepositoryPort } from './alchemy.repository.port';
 import { AlchemyWalletEntity } from '../domain/alchemy-wallet.entity';
 import { AlchemyMapper } from '../alchemy.mapper';
 import { Injectable, Logger } from '@nestjs/common';
@@ -19,9 +19,9 @@ export const alchemyWalletSchema = z.object({
 export type AlchemyWalletModel = z.TypeOf<typeof alchemyWalletSchema>;
 
 @Injectable()
-export class AlchemyWalletRepository
+export class AlchemyRepository
   extends SqlRepositoryBase<AlchemyWalletEntity, AlchemyWalletModel>
-  implements AlchemyWalletRepositoryPort
+  implements AlchemyRepositoryPort
 {
   protected tableName = 'alchemy_wallets';
 
@@ -33,7 +33,7 @@ export class AlchemyWalletRepository
     mapper: AlchemyMapper,
     eventEmitter: EventEmitter2,
   ) {
-    super(pool, mapper, eventEmitter, new Logger(AlchemyWalletRepository.name));
+    super(pool, mapper, eventEmitter, new Logger(AlchemyRepository.name));
   }
 
   async findOneByUserId(userId: string): Promise<AlchemyWalletEntity> {

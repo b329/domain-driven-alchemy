@@ -6,13 +6,13 @@ import { AlchemyWalletEntity } from '@modules/alchemy/domain/alchemy-wallet.enti
 import { ConflictException } from '@libs/exceptions';
 import { Inject } from '@nestjs/common';
 import { ALCHEMY_WALLET_REPOSITORY } from '../../alchemy.di-tokens';
-import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-wallet.repository.port';
+import { AlchemyRepositoryPort } from '@modules/alchemy/database/alchemy.repository.port';
 
 @CommandHandler(CreateAlchemyWalletCommand)
 export class CreateAlchemyWalletService implements ICommandHandler {
   constructor(
     @Inject(ALCHEMY_WALLET_REPOSITORY)
-    protected readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,
+    protected readonly alchemyWalletRepo: AlchemyRepositoryPort,
   ) {}
 
   async execute(

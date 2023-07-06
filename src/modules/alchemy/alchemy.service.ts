@@ -3,7 +3,7 @@ import { AlchemyWeb3, createAlchemyWeb3 } from '@alch/alchemy-web3';
 import { AlchemyApiModuleOptions } from './interfaces';
 import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy.constants';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { AlchemyWalletRepositoryPort } from '@modules/alchemy/database/alchemy-wallet.repository.port';
+import { AlchemyRepositoryPort } from '@modules/alchemy/database/alchemy.repository.port';
 import { ALCHEMY_WALLET_REPOSITORY } from '@modules/alchemy/alchemy.di-tokens';
 import { Err, Ok, Result } from 'oxide.ts';
 import { AggregateID } from '@libs/ddd';
@@ -19,7 +19,7 @@ export class AlchemyService {
     @Inject(ALCHEMY_API_MODULE_OPTIONS)
     private readonly options: AlchemyApiModuleOptions,
     @Inject(ALCHEMY_WALLET_REPOSITORY)
-    protected readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,
+    protected readonly alchemyWalletRepo: AlchemyRepositoryPort,
   ) {
     const { alchemyUrl, ...alchemyWeb3Config } = this.options;
 
@@ -38,7 +38,7 @@ export class AlchemyService {
 export class CreateAlchemyWalletService implements ICommandHandler {
   constructor(
     @Inject(ALCHEMY_WALLET_REPOSITORY)
-    protected readonly alchemyWalletRepo: AlchemyWalletRepositoryPort,
+    protected readonly alchemyWalletRepo: AlchemyRepositoryPort,
   ) {}
 
   async execute(

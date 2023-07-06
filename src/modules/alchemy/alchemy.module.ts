@@ -5,7 +5,7 @@ import { CreateAlchemyWalletService } from './alchemy.service';
 // import { CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler } from '@modules/alchemy/application/event-handlers/create-alchemy-wallet-when-wallet-is-created.domain-event-handler';
 import { AlchemyMapper } from '@modules/alchemy/alchemy.mapper';
 import { ALCHEMY_WALLET_REPOSITORY } from '@modules/alchemy/alchemy.di-tokens';
-import { AlchemyWalletRepository } from '@modules/alchemy/database/alchemy-wallet.repository';
+import { AlchemyRepository } from '@modules/alchemy/database/alchemy.repository';
 import { CreateAlchemyWalletHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy-wallet.http.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 
@@ -20,7 +20,7 @@ const commandHandlers: Provider[] = [CreateAlchemyWalletService];
 const mappers: Provider[] = [AlchemyMapper];
 
 const repositories: Provider[] = [
-  { provide: ALCHEMY_WALLET_REPOSITORY, useClass: AlchemyWalletRepository },
+  { provide: ALCHEMY_WALLET_REPOSITORY, useClass: AlchemyRepository },
 ];
 
 @Module({

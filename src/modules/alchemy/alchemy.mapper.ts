@@ -4,7 +4,7 @@ import { AlchemyWalletEntity } from './domain/alchemy-wallet.entity';
 import {
   AlchemyWalletModel,
   alchemyWalletSchema,
-} from './database/alchemy-wallet.repository';
+} from './database/alchemy.repository';
 
 @Injectable()
 export class AlchemyMapper
