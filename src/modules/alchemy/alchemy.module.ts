@@ -8,6 +8,7 @@ import { AlchemyRepository } from '@modules/alchemy/database/alchemy.repository'
 // import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy.http.controller';
 // import { CqrsModule } from '@nestjs/cqrs';
 import { AlchemyMapper } from '@modules/alchemy/alchemy.mapper';
+import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy/create-alchemy.http.controller';
 
 // const httpControllers = [CreateAlchemyHttpController];
 

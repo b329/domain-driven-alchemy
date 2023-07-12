@@ -4,27 +4,26 @@ import { Err, Ok, Result } from 'oxide.ts';
 import { v4 } from 'uuid';
 import { AlchemyCreatedDomainEvent } from './events/alchemy-created.domain-event';
 import { AlchemyWalletNotEnoughBalanceError } from './alchemy.errors';
-
-export interface CreateAlchemyProps {
-  userId: AggregateID;
-}
-
-export interface AlchemyProps extends CreateAlchemyProps {
-  balance: number;
-}
+import {
+  CreateAlchemyProps,
+  AlchemyProps,
+  AlchemyRoles,
+} from '@modules/alchemy/domain/alchemy.types';
 
 export class AlchemyEntity extends AggregateRoot<AlchemyProps> {
   protected readonly _id: AggregateID;
 
   static create(create: CreateAlchemyProps): AlchemyEntity {
     const id = v4();
-    const props: AlchemyProps = { ...create, balance: 0 };
+    const props: AlchemyProps = { ...create, role: AlchemyRoles.guest };
     const alchemy = new AlchemyEntity({ id, props });
 
     alchemy.addEvent(
       new AlchemyCreatedDomainEvent({
-        aggregateId: id,
         userId: create.userId,
+        aggregateId: id,
+        email: props.email,
+        ...props.address.unpack(),
       }),
     );
 
