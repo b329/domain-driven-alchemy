@@ -14,7 +14,7 @@ export class CreateAlchemyCommand extends Command {
   constructor(props: CommandProps<CreateAlchemyCommand>) {
     super(props);
 
-    this.userId = props.email;
+    this.userId = props.userId;
     this.email = props.email;
     this.country = props.country;
     this.postalCode = props.postalCode;

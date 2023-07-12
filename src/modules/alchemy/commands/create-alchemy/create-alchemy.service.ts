@@ -21,7 +21,7 @@ export class CreateAlchemyService implements ICommandHandler {
     command: CreateAlchemyCommand,
   ): Promise<Result<AggregateID, UserAlreadyExistsError>> {
     const alchemy = AlchemyEntity.create({
-      userId: '',
+      userId: command.userId,
       balance: 0,
       email: command.email,
       address: new Address({
