@@ -1,22 +1,22 @@
 import { Module, Logger, Provider } from '@nestjs/common';
-// import { CreateAlchemyWalletService } from './alchemy.service';
+import { CreateAlchemyService } from './commands/create-alchemy/create-alchemy.service';
 // import { ALCHEMY_API_MODULE_OPTIONS } from './alchemy-api.constants';
 // import { AlchemyApiModuleOptions } from './interfaces';
 import { CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler } from '@modules/alchemy/application/event-handlers/create-alchemy-when-wallet-is-created.domain-event-handler';
 import { ALCHEMY_REPOSITORY } from '@modules/alchemy/alchemy.di-tokens';
 import { AlchemyRepository } from '@modules/alchemy/database/alchemy.repository';
-// import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy-wallet/create-alchemy.http.controller';
 // import { CqrsModule } from '@nestjs/cqrs';
 import { AlchemyMapper } from '@modules/alchemy/alchemy.mapper';
 import { CreateAlchemyHttpController } from '@modules/alchemy/commands/create-alchemy/create-alchemy.http.controller';
+import { CqrsModule } from '@nestjs/cqrs';
 
-// const httpControllers = [CreateAlchemyHttpController];
+const httpControllers = [CreateAlchemyHttpController];
 
 const eventHandlers: Provider[] = [
   CreateAlchemyWalletWhenUserIsCreatedDomainEventHandler,
 ];
 
-// const commandHandlers: Provider[] = [CreateAlchemyWalletService];
+const commandHandlers: Provider[] = [CreateAlchemyService];
 
 const mappers: Provider[] = [AlchemyMapper];
 
@@ -25,14 +25,14 @@ const repositories: Provider[] = [
 ];
 
 @Module({
-  imports: [],
-  controllers: [],
+  imports: [CqrsModule],
+  controllers: [...httpControllers],
   providers: [
     Logger,
     ...eventHandlers,
     ...mappers,
     ...repositories,
-    // ...commandHandlers,
+    ...commandHandlers,
   ],
 })
 export class AlchemyModule {}
